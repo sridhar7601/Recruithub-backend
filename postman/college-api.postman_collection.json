@@ -1,0 +1,158 @@
+{
+  "info": {
+    "name": "College API",
+    "description": "Collection for testing the College API endpoints",
+    "_postman_variable_scope": "environment",
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:8000/api",
+        "type": "string"
+      },
+      {
+        "key": "collegeId",
+        "value": "",
+        "description": "ID of a college to use for testing"
+      }
+    ],
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Create College",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Harvard University\",\n    \"city\": \"Cambridge\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/colleges",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges"]
+        },
+        "description": "Create a new college"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Colleges (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/colleges?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "Get a paginated list of colleges"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Colleges (Filtered by City)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/colleges?page=1&limit=10&city=Cambridge",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "city",
+              "value": "Cambridge"
+            }
+          ]
+        },
+        "description": "Get a paginated list of colleges filtered by city"
+      },
+      "response": []
+    },
+    {
+      "name": "Get College by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/colleges/{{collegeId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges", "{{collegeId}}"]
+        },
+        "description": "Get a college by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update College",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Harvard University (Updated)\",\n    \"city\": \"Cambridge\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/colleges/{{collegeId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges", "{{collegeId}}"]
+        },
+        "description": "Update a college"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete College",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/colleges/{{collegeId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["colleges", "{{collegeId}}"]
+        },
+        "description": "Soft delete a college"
+      },
+      "response": []
+    }
+  ]
+}

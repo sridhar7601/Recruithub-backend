@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "panel-api-collection",
+		"name": "Panel API",
+		"description": "Collection for testing the Panel API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_postman_variable_scope": "environment",
+		"variable": [
+			{
+				"key": "baseUrl",
+				"value": "http://localhost:8000/api",
+				"type": "string"
+			},
+			{
+				"key": "panelId",
+				"value": "",
+				"description": "ID of a panel to use for testing"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Create Panel",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"primaryPanelMember\": {\n        \"employeeId\": \"EMP001\",\n        \"emailId\": \"primary@example.com\",\n        \"name\": \"John Doe\"\n    },\n    \"additionalPanelMembers\": [\n        {\n            \"employeeId\": \"EMP002\",\n            \"emailId\": \"member1@example.com\",\n            \"name\": \"Jane Smith\"\n        }\n    ],\n    \"name\": \"Test Panel\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/panels",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"panels"
+					]
+				},
+				"description": "Create a new panel"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Panels",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/panels?page=1&limit=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"panels"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "primaryPanelMemberEmployeeId",
+							"value": "EMP001",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get a paginated list of panels"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Panel by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/panels/{{panelId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"panels",
+						"{{panelId}}"
+					]
+				},
+				"description": "Get a panel by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Panel",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"additionalPanelMembers\": [\n        {\n            \"employeeId\": \"EMP003\",\n            \"emailId\": \"member2@example.com\",\n            \"name\": \"Bob Johnson\"\n        }\n    ],\n    \"name\": \"Updated Test Panel\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/panels/{{panelId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"panels",
+						"{{panelId}}"
+					]
+				},
+				"description": "Update a panel"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Panel",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/panels/{{panelId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"panels",
+						"{{panelId}}"
+					]
+				},
+				"description": "Soft delete a panel"
+			},
+			"response": []
+		}
+	]
+}

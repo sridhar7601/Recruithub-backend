@@ -1,0 +1,6 @@
+# Example terraform.tfvars file
+# Copy this file to terraform.tfvars and fill in the values
+
+# Database credentials
+db_username = "dbadmin"  # 'admin' is a reserved word in DocumentDB
+db_password = "mongodb-documentdb"

@@ -1,0 +1,283 @@
+{
+  "info": {
+    "name": "Student API",
+    "description": "Collection for testing the Student API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_variable_scope": "environment",
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:8000/api",
+        "type": "string"
+      },
+      {
+        "key": "studentId",
+        "value": "",
+        "description": "ID of a student to use for testing"
+      },
+      {
+        "key": "collegeId",
+        "value": "",
+        "description": "ID of a college to use for testing"
+      },
+      {
+        "key": "driveId",
+        "value": "",
+        "description": "ID of a drive to use for testing"
+      },
+      {
+        "key": "roundNumber",
+        "value": "1",
+        "description": "Round number to use for testing"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Create Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"registrationNumber\": \"REG001\",\n  \"emailId\": \"student@example.com\",\n  \"name\": \"John Student\",\n  \"phoneNumber\": \"1234567890\",\n  \"degree\": \"B.Tech - Computer Science\",\n  \"department\": \"Computer Science\",\n  \"gender\": \"Male\",\n  \"dateOfBirth\": \"2000-01-15\",\n  \"githubProfile\": \"https://github.com/student\",\n  \"linkedInProfile\": \"https://linkedin.com/in/student\",\n  \"resumeUrl\": \"https://drive.google.com/file/resume\",\n  \"leetCodeProfile\": \"https://leetcode.com/student\",\n  \"academicDetails\": {\n    \"tenthMarks\": \"95%\",\n    \"twelfthMarks\": \"92%\",\n    \"diplomaMarks\": \"\",\n    \"ugMarks\": \"8.7 CGPA\",\n    \"pgMarks\": \"\"\n  },\n  \"backlogHistory\": \"None\",\n  \"currentBacklogs\": 0,\n  \"aiScore\": {\n    \"total\": 85,\n    \"components\": {\n      \"github\": { \"fullStack\": 80, \"aiml\": 70, \"contribution\": 75 },\n      \"resume\": {\n        \"fullStack\": { \"frontend\": 85, \"backend\": 80, \"database\": 75, \"infrastructure\": 70 },\n        \"aiml\": { \"core\": 65, \"genai\": 60 }\n      }\n    },\n    \"expertise\": { \"fullStack\": \"MEDIUM\", \"aiml\": \"LOW\" }\n  },\n  \"wecpTestScore\": 78,\n  \"githubDetails\": {\n    \"totalScore\": 82,\n    \"domainScore\": 80,\n    \"contributionScore\": 75,\n    \"domains\": \"{\\\"frontend\\\": true, \\\"backend\\\": true}\",\n    \"technologies\": \"React, Node.js, MongoDB\"\n  },\n  \"testBatch\": \"Batch 1\",\n  \"collegeId\": \"{{collegeId}}\",\n  \"collegeName\": \"Example College\",\n  \"driveId\": \"{{driveId}}\",\n  \"driveName\": \"Example Drive\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/students",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ]
+        },
+        "description": "Create a new student"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Students",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students?page=1&limit=10&collegeId={{collegeId}}&driveId={{driveId}}&department=Computer Science&testBatch=Batch 1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "collegeId",
+              "value": "{{collegeId}}"
+            },
+            {
+              "key": "driveId",
+              "value": "{{driveId}}"
+            },
+            {
+              "key": "department",
+              "value": "Computer Science"
+            },
+            {
+              "key": "testBatch",
+              "value": "Batch 1"
+            }
+          ]
+        },
+        "description": "Get a paginated list of students with optional filters"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Student by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "{{studentId}}"
+          ]
+        },
+        "description": "Get a student by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Student",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"githubProfile\": \"https://github.com/updated-student\",\n  \"aiScore\": {\n    \"total\": 90,\n    \"components\": {\n      \"github\": { \"fullStack\": 85, \"aiml\": 75, \"contribution\": 80 },\n      \"resume\": {\n        \"fullStack\": { \"frontend\": 90, \"backend\": 85, \"database\": 80, \"infrastructure\": 75 },\n        \"aiml\": { \"core\": 70, \"genai\": 65 }\n      }\n    },\n    \"expertise\": { \"fullStack\": \"HIGH\", \"aiml\": \"MEDIUM\" }\n  },\n  \"wecpTestScore\": 85\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "{{studentId}}"
+          ]
+        },
+        "description": "Update a student"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Student",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "{{studentId}}"
+          ]
+        },
+        "description": "Soft delete a student"
+      },
+      "response": []
+    },
+    {
+      "name": "Batch Import Students",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/file.csv"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/students/import/{{driveId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "import",
+            "{{driveId}}"
+          ]
+        },
+        "description": "Batch import students from a CSV file"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Student Rounds",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}/rounds",
+          "host": ["{{baseUrl}}"],
+          "path": ["students", "{{studentId}}", "rounds"]
+        },
+        "description": "Get all rounds for a student"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Student Round by Number",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}/rounds/{{roundNumber}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["students", "{{studentId}}", "rounds", "{{roundNumber}}"]
+        },
+        "description": "Get a specific round for a student"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Student Round",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"IN_PROGRESS\",\n  \"evaluatedBy\": {\n    \"employeeId\": \"emp123\",\n    \"name\": \"Jane Smith\",\n    \"emailId\": \"jane.smith@company.com\"\n  },\n  \"evaluationStartTime\": \"2025-04-16T10:00:00Z\",\n  \"evaluationCriteria\": [\n    {\n      \"criteriaId\": \"criteria-uuid\",\n      \"value\": 85,\n      \"feedback\": \"Good aptitude performance\"\n    }\n  ],\n  \"notes\": \"Candidate performed well in the online assessment\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}/rounds/{{roundNumber}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["students", "{{studentId}}", "rounds", "{{roundNumber}}"]
+        },
+        "description": "Update a specific round for a student"
+      },
+      "response": []
+    },
+    {
+      "name": "Sync Student Rounds",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/{{studentId}}/rounds/sync",
+          "host": ["{{baseUrl}}"],
+          "path": ["students", "{{studentId}}", "rounds", "sync"]
+        },
+        "description": "Sync student rounds with drive configuration"
+      },
+      "response": []
+    },
+    {
+      "name": "Sync All Students in Drive",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/students/rounds/sync",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "students", "rounds", "sync"]
+        },
+        "description": "Sync all students in a drive with the drive configuration"
+      },
+      "response": []
+    }
+  ]
+}

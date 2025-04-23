@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@recruit-hub/college": ["libs/nest-modules/college/src/index.ts"],
+      "@recruit-hub/drive": ["libs/nest-modules/drive/src/index.ts"],
+      "@recruit-hub/interfaces": ["libs/interfaces/src/index.ts"],
+      "@recruit-hub/panel": ["libs/nest-modules/panel/src/index.ts"],
+      "@recruit-hub/profileEvaluator": ["libs/nest-modules/profileEvaluator/src/index.ts"],
+      "@recruit-hub/student": ["libs/nest-modules/student/src/index.ts"],
+      "@recruit-hub/user": ["libs/nest-modules/user/src/index.ts"],
+      "@recruit-hub/utils": ["libs/utils/src/index.ts"],
+      "@recruit-hub/assignment": ["libs/nest-modules/assignment/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

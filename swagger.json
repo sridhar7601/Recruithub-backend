@@ -1,0 +1,3483 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RecruitHub API",
+    "description": "API documentation for RecruitHub",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your bearer token in the format **Bearer {token}**"
+      }
+    },
+    "schemas": {
+      "AssignedByDto": {
+        "type": "object",
+        "required": ["employeeId", "name", "emailId"],
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "Employee ID of the person who assigned",
+            "example": "EMP002"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the person who assigned",
+            "example": "Admin User"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the person who assigned",
+            "example": "admin@company.com"
+          }
+        }
+      },
+      "CreateAssignmentDto": {
+        "type": "object",
+        "required": [
+          "studentId",
+          "studentName",
+          "registrationNumber",
+          "emailId",
+          "collegeId",
+          "collegeName",
+          "driveId",
+          "driveName",
+          "panelId",
+          "primaryPanelMember",
+          "roundNumber",
+          "assignedBy",
+          "assignedTimestamp"
+        ],
+        "properties": {
+          "assignmentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the assignment (auto-generated if not provided)",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "studentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the student",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "studentName": {
+            "type": "string",
+            "description": "Name of the student",
+            "example": "John Doe"
+          },
+          "registrationNumber": {
+            "type": "string",
+            "description": "Registration number of the student",
+            "example": "REG123"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the student",
+            "example": "john@example.com"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Example College"
+          },
+          "driveId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the drive",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "driveName": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Summer Internship Drive"
+          },
+          "panelId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the panel",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primaryPanelMember": {
+            "$ref": "#/components/schemas/PanelMemberDto"
+          },
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "roundNumber": {
+            "type": "integer",
+            "description": "Round number",
+            "example": 1
+          },
+          "assignedBy": {
+            "$ref": "#/components/schemas/AssignedByDto"
+          },
+          "assignedTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the assignment was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "UpdateAssignmentDto": {
+        "type": "object",
+        "properties": {
+          "panelId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the panel",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primaryPanelMember": {
+            "$ref": "#/components/schemas/PanelMemberDto"
+          },
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "roundNumber": {
+            "type": "integer",
+            "description": "Round number",
+            "example": 2
+          }
+        }
+      },
+      "Assignment": {
+        "type": "object",
+        "properties": {
+          "assignmentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the assignment",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "studentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the student",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "studentName": {
+            "type": "string",
+            "description": "Name of the student",
+            "example": "John Doe"
+          },
+          "registrationNumber": {
+            "type": "string",
+            "description": "Registration number of the student",
+            "example": "REG123"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the student",
+            "example": "john@example.com"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Example College"
+          },
+          "driveId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the drive",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "driveName": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Summer Internship Drive"
+          },
+          "panelId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the panel",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primaryPanelMember": {
+            "$ref": "#/components/schemas/PanelMemberDto"
+          },
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "roundNumber": {
+            "type": "integer",
+            "description": "Round number",
+            "example": 1
+          },
+          "assignedBy": {
+            "$ref": "#/components/schemas/AssignedByDto"
+          },
+          "assignedTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the assignment was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the assignment is active",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the assignment was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the assignment was last updated",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "PaginatedAssignmentResponse": {
+        "type": "object",
+        "properties": {
+          "assignments": {
+            "type": "array",
+            "description": "List of assignments",
+            "items": {
+              "$ref": "#/components/schemas/Assignment"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of assignments",
+            "example": 100
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page",
+            "example": 10
+          }
+        }
+      },
+      "PanelMemberDto": {
+        "type": "object",
+        "required": ["employeeId", "emailId", "name"],
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "Employee ID of the panel member",
+            "example": "EMP001"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email ID of the panel member",
+            "example": "primary@example.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the panel member",
+            "example": "John Doe"
+          }
+        }
+      },
+      "CreatePanelDto": {
+        "type": "object",
+        "required": ["primaryPanelMember"],
+        "properties": {
+          "primaryPanelMember": {
+            "$ref": "#/components/schemas/PanelMemberDto"
+          },
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the panel",
+            "example": "Test Panel"
+          }
+        }
+      },
+      "UpdatePanelDto": {
+        "type": "object",
+        "properties": {
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the panel",
+            "example": "Updated Test Panel"
+          }
+        }
+      },
+      "Panel": {
+        "type": "object",
+        "properties": {
+          "panelId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the panel",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primaryPanelMember": {
+            "$ref": "#/components/schemas/PanelMemberDto"
+          },
+          "additionalPanelMembers": {
+            "type": "array",
+            "description": "List of additional panel members",
+            "items": {
+              "$ref": "#/components/schemas/PanelMemberDto"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the panel",
+            "example": "Test Panel"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the panel was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the panel was last updated",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "EvaluationCriteriaDto": {
+        "type": "object",
+        "required": ["name", "ratingType"],
+        "properties": {
+          "criteriaId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the evaluation criteria",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the evaluation criteria",
+            "example": "Problem Solving"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the evaluation criteria",
+            "example": "Ability to solve complex problems"
+          },
+          "ratingType": {
+            "type": "string",
+            "enum": ["percentage", "scale-5", "scale-10", "yes-no", "text"],
+            "description": "Type of rating for this criteria",
+            "example": "scale-5"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Whether this criteria is required for evaluation",
+            "default": true,
+            "example": true
+          }
+        }
+      },
+      "RoundDto": {
+        "type": "object",
+        "required": ["roundNumber", "name", "startTime", "endTime", "evaluationCriteria"],
+        "properties": {
+          "roundNumber": {
+            "type": "integer",
+            "description": "The round number (1-5)",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the round",
+            "example": "Technical Round"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the round",
+            "example": "2025-06-15T09:00:00Z"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of the round",
+            "example": "2025-06-15T12:00:00Z"
+          },
+          "evaluationCriteria": {
+            "type": "array",
+            "description": "List of evaluation criteria for this round",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationCriteriaDto"
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "CreateRoundDto": {
+        "$ref": "#/components/schemas/RoundDto"
+      },
+      "UpdateRoundDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the round",
+            "example": "Updated Technical Round"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the round",
+            "example": "2025-06-15T10:00:00Z"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of the round",
+            "example": "2025-06-15T13:00:00Z"
+          },
+          "evaluationCriteria": {
+            "type": "array",
+            "description": "List of evaluation criteria for this round",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationCriteriaDto"
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "SecondarySpocDto": {
+        "type": "object",
+        "required": ["spocId", "spocEmail", "spocName"],
+        "properties": {
+          "spocId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the SPOC",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "spocEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the SPOC",
+            "example": "secondary.spoc@example.com"
+          },
+          "spocName": {
+            "type": "string",
+            "description": "Name of the SPOC",
+            "example": "Jane Smith"
+          }
+        }
+      },
+      "CreateDriveDto": {
+        "type": "object",
+        "required": [
+          "name", 
+          "collegeId", 
+          "collegeName", 
+          "role", 
+          "practice", 
+          "startDate", 
+          "primarySpocId", 
+          "primarySpocEmail", 
+          "primarySpocName"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Summer 2025 Recruitment Drive"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Harvard University"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["Associate Engineer", "Business Analyst"],
+            "description": "Role being recruited for",
+            "example": "Associate Engineer"
+          },
+          "practice": {
+            "type": "string",
+            "enum": ["Application Development", "DevOps", "PMO", "BaUX"],
+            "description": "Practice area",
+            "example": "Application Development"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start date of the drive",
+            "example": "2025-06-15T09:00:00Z"
+          },
+          "primarySpocId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the primary SPOC",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primarySpocEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the primary SPOC",
+            "example": "primary.spoc@example.com"
+          },
+          "primarySpocName": {
+            "type": "string",
+            "description": "Name of the primary SPOC",
+            "example": "John Doe"
+          },
+          "secondarySpocs": {
+            "type": "array",
+            "description": "List of secondary SPOCs",
+            "items": {
+              "$ref": "#/components/schemas/SecondarySpocDto"
+            },
+            "maxItems": 5
+          },
+          "isPinned": {
+            "type": "boolean",
+            "description": "Whether the drive is pinned",
+            "default": false,
+            "example": false
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "description": "Whether the drive is completed",
+            "default": false,
+            "example": false
+          },
+          "rounds": {
+            "type": "array",
+            "description": "List of rounds in the drive",
+            "items": {
+              "$ref": "#/components/schemas/RoundDto"
+            },
+            "maxItems": 5
+          }
+        }
+      },
+      "UpdateDriveDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Updated Summer 2025 Recruitment Drive"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Harvard University"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["Associate Engineer", "Business Analyst"],
+            "description": "Role being recruited for",
+            "example": "Associate Engineer"
+          },
+          "practice": {
+            "type": "string",
+            "enum": ["Application Development", "DevOps", "PMO", "BaUX"],
+            "description": "Practice area",
+            "example": "Application Development"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start date of the drive",
+            "example": "2025-06-15T09:00:00Z"
+          },
+          "primarySpocId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the primary SPOC",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primarySpocEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the primary SPOC",
+            "example": "primary.spoc@example.com"
+          },
+          "primarySpocName": {
+            "type": "string",
+            "description": "Name of the primary SPOC",
+            "example": "John Doe"
+          },
+          "secondarySpocs": {
+            "type": "array",
+            "description": "List of secondary SPOCs",
+            "items": {
+              "$ref": "#/components/schemas/SecondarySpocDto"
+            },
+            "maxItems": 5
+          },
+          "isPinned": {
+            "type": "boolean",
+            "description": "Whether the drive is pinned",
+            "example": true
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "description": "Whether the drive is completed",
+            "example": false
+          },
+          "rounds": {
+            "type": "array",
+            "description": "List of rounds in the drive",
+            "items": {
+              "$ref": "#/components/schemas/RoundDto"
+            },
+            "maxItems": 5
+          }
+        }
+      },
+      "DriveDocument": {
+        "type": "object",
+        "properties": {
+          "driveId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the drive",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Summer 2025 Recruitment Drive"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Harvard University"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["Associate Engineer", "Business Analyst"],
+            "description": "Role being recruited for",
+            "example": "Associate Engineer"
+          },
+          "practice": {
+            "type": "string",
+            "enum": ["Application Development", "DevOps", "PMO", "BaUX"],
+            "description": "Practice area",
+            "example": "Application Development"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start date of the drive",
+            "example": "2025-06-15T09:00:00Z"
+          },
+          "primarySpocId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the primary SPOC",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "primarySpocEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the primary SPOC",
+            "example": "primary.spoc@example.com"
+          },
+          "primarySpocName": {
+            "type": "string",
+            "description": "Name of the primary SPOC",
+            "example": "John Doe"
+          },
+          "secondarySpocs": {
+            "type": "array",
+            "description": "List of secondary SPOCs",
+            "items": {
+              "$ref": "#/components/schemas/SecondarySpocDto"
+            }
+          },
+          "isPinned": {
+            "type": "boolean",
+            "description": "Whether the drive is pinned",
+            "example": false
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "description": "Whether the drive is completed",
+            "example": false
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the drive is active",
+            "example": true
+          },
+          "wecpTestIds": {
+            "type": "array",
+            "description": "List of WECP test IDs",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rounds": {
+            "type": "array",
+            "description": "List of rounds in the drive",
+            "items": {
+              "$ref": "#/components/schemas/RoundDto"
+            }
+          },
+          "createdTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the drive was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "updatedTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the drive was last updated",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "PaginatedDriveResponse": {
+        "type": "object",
+        "properties": {
+          "drives": {
+            "type": "array",
+            "description": "List of drives",
+            "items": {
+              "$ref": "#/components/schemas/DriveDocument"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of drives",
+            "example": 100
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page",
+            "example": 10
+          }
+        }
+      },
+      "CreateCollegeDto": {
+        "type": "object",
+        "required": ["name", "city"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the college",
+            "example": "Harvard University",
+            "minLength": 5
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the college is located",
+            "example": "Cambridge"
+          }
+        }
+      },
+      "UpdateCollegeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the college",
+            "example": "Harvard University (Updated)",
+            "minLength": 5
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the college is located",
+            "example": "Cambridge"
+          }
+        }
+      },
+      "CollegeResponseDto": {
+        "type": "object",
+        "properties": {
+          "collegeId": {
+            "type": "string",
+            "description": "The unique identifier for the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the college",
+            "example": "Harvard University"
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the college is located",
+            "example": "Cambridge"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "description": "Indicates whether the college has been soft deleted",
+            "example": false
+          },
+          "createdTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the college was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "updatedTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the college was last updated",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "PaginationMetaDto": {
+        "type": "object",
+        "properties": {
+          "totalItems": {
+            "type": "integer",
+            "description": "The total number of items across all pages",
+            "example": 100
+          },
+          "itemsPerPage": {
+            "type": "integer",
+            "description": "The number of items per page",
+            "example": 10
+          },
+          "currentPage": {
+            "type": "integer",
+            "description": "The current page number",
+            "example": 1
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "The total number of pages",
+            "example": 10
+          }
+        }
+      },
+      "PaginatedCollegeResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "The array of college items for the current page",
+            "items": {
+              "$ref": "#/components/schemas/CollegeResponseDto"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        }
+      },
+      "AcademicDetailsDto": {
+        "type": "object",
+        "properties": {
+          "tenthMarks": {
+            "type": "string",
+            "description": "Marks obtained in 10th grade",
+            "example": "95%"
+          },
+          "twelfthMarks": {
+            "type": "string",
+            "description": "Marks obtained in 12th grade",
+            "example": "92%"
+          },
+          "diplomaMarks": {
+            "type": "string",
+            "description": "Marks obtained in diploma",
+            "example": "85%"
+          },
+          "ugMarks": {
+            "type": "string",
+            "description": "Marks obtained in undergraduate",
+            "example": "8.7 CGPA"
+          },
+          "pgMarks": {
+            "type": "string",
+            "description": "Marks obtained in postgraduate",
+            "example": "9.2 CGPA"
+          }
+        }
+      },
+      "GitHubDetailsDto": {
+        "type": "object",
+        "properties": {
+          "totalScore": {
+            "type": "number",
+            "description": "Total GitHub score",
+            "example": 82
+          },
+          "domainScore": {
+            "type": "number",
+            "description": "Domain score based on GitHub profile",
+            "example": 80
+          },
+          "contributionScore": {
+            "type": "number",
+            "description": "Contribution score based on GitHub profile",
+            "example": 75
+          },
+          "domains": {
+            "type": "string",
+            "description": "Domains of expertise in JSON format",
+            "example": "{\"frontend\": true, \"backend\": true}"
+          },
+          "technologies": {
+            "type": "string",
+            "description": "Technologies used in GitHub repositories",
+            "example": "React, Node.js, MongoDB"
+          },
+          "consideration": {
+            "type": "boolean",
+            "description": "Whether to consider GitHub profile for evaluation",
+            "example": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if any during GitHub evaluation",
+            "example": "Unable to fetch GitHub profile"
+          },
+          "lastAttempt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last attempt to evaluate GitHub profile",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "WeCPDataDto": {
+        "type": "object",
+        "properties": {
+          "candidateId": {
+            "type": "string",
+            "description": "Candidate ID in WECP system",
+            "example": "WECP123"
+          },
+          "percentage": {
+            "type": "number",
+            "description": "Percentage score in WECP test",
+            "example": 78
+          },
+          "programmingLanguagesUsed": {
+            "type": "array",
+            "description": "Programming languages used in WECP test",
+            "items": {
+              "type": "string"
+            },
+            "example": ["Java", "JavaScript"]
+          },
+          "testStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of WECP test",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "testDuration": {
+            "type": "string",
+            "description": "Duration of WECP test",
+            "example": "01:30:00"
+          },
+          "testFinished": {
+            "type": "boolean",
+            "description": "Whether the WECP test is finished",
+            "example": true
+          },
+          "reportLink": {
+            "type": "string",
+            "description": "Link to WECP test report",
+            "example": "https://wecp.com/reports/123"
+          }
+        }
+      },
+      "AIScoreComponentsDto": {
+        "type": "object",
+        "properties": {
+          "github": {
+            "type": "object",
+            "properties": {
+              "fullStack": {
+                "type": "number",
+                "description": "Full stack score based on GitHub",
+                "example": 80
+              },
+              "aiml": {
+                "type": "number",
+                "description": "AI/ML score based on GitHub",
+                "example": 70
+              },
+              "contribution": {
+                "type": "number",
+                "description": "Contribution score based on GitHub",
+                "example": 75
+              }
+            }
+          },
+          "resume": {
+            "type": "object",
+            "properties": {
+              "fullStack": {
+                "type": "object",
+                "properties": {
+                  "frontend": {
+                    "type": "number",
+                    "description": "Frontend score based on resume",
+                    "example": 85
+                  },
+                  "backend": {
+                    "type": "number",
+                    "description": "Backend score based on resume",
+                    "example": 80
+                  },
+                  "database": {
+                    "type": "number",
+                    "description": "Database score based on resume",
+                    "example": 75
+                  },
+                  "infrastructure": {
+                    "type": "number",
+                    "description": "Infrastructure score based on resume",
+                    "example": 70
+                  }
+                }
+              },
+              "aiml": {
+                "type": "object",
+                "properties": {
+                  "core": {
+                    "type": "number",
+                    "description": "Core AI/ML score based on resume",
+                    "example": 65
+                  },
+                  "genai": {
+                    "type": "number",
+                    "description": "Generative AI score based on resume",
+                    "example": 60
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AIScoreDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total AI score",
+            "example": 85
+          },
+          "components": {
+            "$ref": "#/components/schemas/AIScoreComponentsDto"
+          },
+          "expertise": {
+            "type": "object",
+            "properties": {
+              "fullStack": {
+                "type": "string",
+                "description": "Full stack expertise level",
+                "example": "MEDIUM"
+              },
+              "aiml": {
+                "type": "string",
+                "description": "AI/ML expertise level",
+                "example": "LOW"
+              }
+            }
+          }
+        }
+      },
+      "StudentEvaluationCriteriaDto": {
+        "type": "object",
+        "required": ["criteriaId"],
+        "properties": {
+          "criteriaId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the evaluation criteria",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the evaluation criteria",
+            "example": "Problem Solving"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the evaluation criteria",
+            "example": "Ability to solve complex problems"
+          },
+          "ratingType": {
+            "type": "string",
+            "enum": ["percentage", "scale-5", "scale-10", "yes-no", "text"],
+            "description": "Type of rating for this criteria",
+            "example": "scale-5"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Whether this criteria is required for evaluation",
+            "example": true
+          },
+          "value": {
+            "type": "object",
+            "description": "Value of the evaluation (can be number, boolean, or string)",
+            "example": 4
+          },
+          "feedback": {
+            "type": "string",
+            "description": "Feedback for this criteria",
+            "example": "Good aptitude performance"
+          }
+        }
+      },
+      "StudentRoundEvaluatorDto": {
+        "type": "object",
+        "required": ["employeeId", "name", "emailId"],
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "description": "Employee ID of the evaluator",
+            "example": "emp123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the evaluator",
+            "example": "Jane Smith"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the evaluator",
+            "example": "jane.smith@company.com"
+          }
+        }
+      },
+      "UpdateStudentRoundDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the round",
+            "example": "Technical Round"
+          },
+          "evaluationCriteria": {
+            "type": "array",
+            "description": "List of evaluation criteria for this round",
+            "items": {
+              "$ref": "#/components/schemas/StudentEvaluationCriteriaDto"
+            }
+          },
+          "overallRating": {
+            "type": "number",
+            "description": "Overall rating for the round",
+            "example": 4.5
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes for the round",
+            "example": "Candidate performed well in the online assessment"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "SUBMITTED"],
+            "description": "Status of the round",
+            "example": "IN_PROGRESS"
+          },
+          "evaluatedBy": {
+            "$ref": "#/components/schemas/StudentRoundEvaluatorDto"
+          },
+          "evaluationStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the evaluation",
+            "example": "2025-04-16T10:00:00Z"
+          },
+          "evaluationEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of the evaluation",
+            "example": "2025-04-16T11:00:00Z"
+          }
+        }
+      },
+      "StudentRound": {
+        "type": "object",
+        "properties": {
+          "roundNumber": {
+            "type": "integer",
+            "description": "The round number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the round",
+            "example": "Technical Round"
+          },
+          "evaluationCriteria": {
+            "type": "array",
+            "description": "List of evaluation criteria for this round",
+            "items": {
+              "$ref": "#/components/schemas/StudentEvaluationCriteriaDto"
+            }
+          },
+          "overallRating": {
+            "type": "number",
+            "description": "Overall rating for the round",
+            "example": 4.5
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes for the round",
+            "example": "Candidate performed well in the online assessment"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "SUBMITTED"],
+            "description": "Status of the round",
+            "example": "IN_PROGRESS"
+          },
+          "evaluatedBy": {
+            "$ref": "#/components/schemas/StudentRoundEvaluatorDto"
+          },
+          "evaluationStartTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the evaluation",
+            "example": "2025-04-16T10:00:00Z"
+          },
+          "evaluationEndTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of the evaluation",
+            "example": "2025-04-16T11:00:00Z"
+          }
+        }
+      },
+      "CreateStudentDto": {
+        "type": "object",
+        "required": ["registrationNumber", "emailId", "department", "testBatch", "collegeId", "collegeName", "driveId", "driveName"],
+        "properties": {
+          "registrationNumber": {
+            "type": "string",
+            "description": "Registration number of the student",
+            "example": "REG001"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the student",
+            "example": "student@example.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the student",
+            "example": "John Student"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the student",
+            "example": "1234567890"
+          },
+          "degree": {
+            "type": "string",
+            "description": "Degree of the student",
+            "example": "B.Tech - Computer Science"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department of the student",
+            "example": "Computer Science"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the student",
+            "example": "Male"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Date of birth of the student",
+            "example": "2000-01-15"
+          },
+          "githubProfile": {
+            "type": "string",
+            "description": "GitHub profile URL of the student",
+            "example": "https://github.com/student"
+          },
+          "linkedInProfile": {
+            "type": "string",
+            "description": "LinkedIn profile URL of the student",
+            "example": "https://linkedin.com/in/student"
+          },
+          "resumeUrl": {
+            "type": "string",
+            "description": "Resume URL of the student",
+            "example": "https://drive.google.com/file/resume"
+          },
+          "leetCodeProfile": {
+            "type": "string",
+            "description": "LeetCode profile URL of the student",
+            "example": "https://leetcode.com/student"
+          },
+          "academicDetails": {
+            "$ref": "#/components/schemas/AcademicDetailsDto"
+          },
+          "backlogHistory": {
+            "type": "string",
+            "description": "Backlog history of the student",
+            "example": "None"
+          },
+          "currentBacklogs": {
+            "type": "integer",
+            "description": "Current backlogs of the student",
+            "example": 0
+          },
+          "aiScore": {
+            "$ref": "#/components/schemas/AIScoreDto"
+          },
+          "wecpTestScore": {
+            "type": "number",
+            "description": "WECP test score of the student",
+            "example": 78
+          },
+          "githubDetails": {
+            "$ref": "#/components/schemas/GitHubDetailsDto"
+          },
+          "githubEvaluated": {
+            "type": "boolean",
+            "description": "Whether GitHub profile has been evaluated",
+            "example": false
+          },
+          "resumeEvaluated": {
+            "type": "boolean",
+            "description": "Whether resume has been evaluated",
+            "example": false
+          },
+          "wecpData": {
+            "$ref": "#/components/schemas/WeCPDataDto"
+          },
+          "testBatch": {
+            "type": "string",
+            "description": "Test batch of the student",
+            "example": "Batch 1"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Example College"
+          },
+          "driveId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the drive",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "driveName": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Example Drive"
+          }
+        }
+      },
+      "UpdateStudentDto": {
+        "type": "object",
+        "properties": {
+          "registrationNumber": {
+            "type": "string",
+            "description": "Registration number of the student",
+            "example": "REG001"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the student",
+            "example": "student@example.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the student",
+            "example": "John Student"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the student",
+            "example": "1234567890"
+          },
+          "degree": {
+            "type": "string",
+            "description": "Degree of the student",
+            "example": "B.Tech - Computer Science"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department of the student",
+            "example": "Computer Science"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the student",
+            "example": "Male"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Date of birth of the student",
+            "example": "2000-01-15"
+          },
+          "githubProfile": {
+            "type": "string",
+            "description": "GitHub profile URL of the student",
+            "example": "https://github.com/updated-student"
+          },
+          "linkedInProfile": {
+            "type": "string",
+            "description": "LinkedIn profile URL of the student",
+            "example": "https://linkedin.com/in/student"
+          },
+          "resumeUrl": {
+            "type": "string",
+            "description": "Resume URL of the student",
+            "example": "https://drive.google.com/file/resume"
+          },
+          "leetCodeProfile": {
+            "type": "string",
+            "description": "LeetCode profile URL of the student",
+            "example": "https://leetcode.com/student"
+          },
+          "academicDetails": {
+            "$ref": "#/components/schemas/AcademicDetailsDto"
+          },
+          "backlogHistory": {
+            "type": "string",
+            "description": "Backlog history of the student",
+            "example": "None"
+          },
+          "currentBacklogs": {
+            "type": "integer",
+            "description": "Current backlogs of the student",
+            "example": 0
+          },
+          "aiScore": {
+            "$ref": "#/components/schemas/AIScoreDto"
+          },
+          "wecpTestScore": {
+            "type": "number",
+            "description": "WECP test score of the student",
+            "example": 85
+          },
+          "githubDetails": {
+            "$ref": "#/components/schemas/GitHubDetailsDto"
+          },
+          "githubEvaluated": {
+            "type": "boolean",
+            "description": "Whether GitHub profile has been evaluated",
+            "example": true
+          },
+          "resumeEvaluated": {
+            "type": "boolean",
+            "description": "Whether resume has been evaluated",
+            "example": true
+          },
+          "wecpData": {
+            "$ref": "#/components/schemas/WeCPDataDto"
+          },
+          "testBatch": {
+            "type": "string",
+            "description": "Test batch of the student",
+            "example": "Batch 1"
+          }
+        }
+      },
+      "Student": {
+        "type": "object",
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "description": "Unique identifier for the student",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "registrationNumber": {
+            "type": "string",
+            "description": "Registration number of the student",
+            "example": "REG001"
+          },
+          "emailId": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the student",
+            "example": "student@example.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the student",
+            "example": "John Student"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the student",
+            "example": "1234567890"
+          },
+          "degree": {
+            "type": "string",
+            "description": "Degree of the student",
+            "example": "B.Tech - Computer Science"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department of the student",
+            "example": "Computer Science"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the student",
+            "example": "Male"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Date of birth of the student",
+            "example": "2000-01-15"
+          },
+          "githubProfile": {
+            "type": "string",
+            "description": "GitHub profile URL of the student",
+            "example": "https://github.com/student"
+          },
+          "linkedInProfile": {
+            "type": "string",
+            "description": "LinkedIn profile URL of the student",
+            "example": "https://linkedin.com/in/student"
+          },
+          "resumeUrl": {
+            "type": "string",
+            "description": "Resume URL of the student",
+            "example": "https://drive.google.com/file/resume"
+          },
+          "leetCodeProfile": {
+            "type": "string",
+            "description": "LeetCode profile URL of the student",
+            "example": "https://leetcode.com/student"
+          },
+          "academicDetails": {
+            "$ref": "#/components/schemas/AcademicDetailsDto"
+          },
+          "backlogHistory": {
+            "type": "string",
+            "description": "Backlog history of the student",
+            "example": "None"
+          },
+          "currentBacklogs": {
+            "type": "integer",
+            "description": "Current backlogs of the student",
+            "example": 0
+          },
+          "aiScore": {
+            "$ref": "#/components/schemas/AIScoreDto"
+          },
+          "wecpTestScore": {
+            "type": "number",
+            "description": "WECP test score of the student",
+            "example": 78
+          },
+          "githubDetails": {
+            "$ref": "#/components/schemas/GitHubDetailsDto"
+          },
+          "githubEvaluated": {
+            "type": "boolean",
+            "description": "Whether GitHub profile has been evaluated",
+            "example": false
+          },
+          "resumeEvaluated": {
+            "type": "boolean",
+            "description": "Whether resume has been evaluated",
+            "example": false
+          },
+          "wecpData": {
+            "$ref": "#/components/schemas/WeCPDataDto"
+          },
+          "testBatch": {
+            "type": "string",
+            "description": "Test batch of the student",
+            "example": "Batch 1"
+          },
+          "collegeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the college",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "collegeName": {
+            "type": "string",
+            "description": "Name of the college",
+            "example": "Example College"
+          },
+          "driveId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the drive",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "driveName": {
+            "type": "string",
+            "description": "Name of the drive",
+            "example": "Example Drive"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the student is active",
+            "example": true
+          },
+          "rounds": {
+            "type": "array",
+            "description": "List of rounds for the student",
+            "items": {
+              "$ref": "#/components/schemas/StudentRound"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the student was created",
+            "example": "2025-03-25T07:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the student was last updated",
+            "example": "2025-03-25T07:00:00.000Z"
+          }
+        }
+      },
+      "PaginatedStudentResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "List of students",
+            "items": {
+              "$ref": "#/components/schemas/Student"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of students",
+            "example": 100
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page",
+            "example": 10
+          }
+        }
+      },
+      "ImportResult": {
+        "type": "object",
+        "properties": {
+          "totalInserted": {
+            "type": "integer",
+            "description": "Total number of students inserted",
+            "example": 50
+          },
+          "skippedEntries": {
+            "type": "object",
+            "properties": {
+              "duplicates": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer",
+                    "description": "Number of duplicate entries skipped",
+                    "example": 5
+                  },
+                  "details": {
+                    "type": "array",
+                    "description": "Details of duplicate entries",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "registrationNumber": {
+                          "type": "string",
+                          "description": "Registration number of the duplicate entry",
+                          "example": "REG001"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "description": "Reason for skipping the duplicate entry",
+                          "example": "Registration number already exists"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "invalidData": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer",
+                    "description": "Number of invalid entries skipped",
+                    "example": 3
+                  },
+                  "details": {
+                    "type": "array",
+                    "description": "Details of invalid entries",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "row": {
+                          "type": "integer",
+                          "description": "Row number of the invalid entry",
+                          "example": 10
+                        },
+                        "errors": {
+                          "type": "array",
+                          "description": "Errors in the invalid entry",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["Missing required field: emailId"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SyncResult": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Total number of students processed",
+            "example": 100
+          },
+          "updated": {
+            "type": "integer",
+            "description": "Number of students updated",
+            "example": 50
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "colleges",
+      "description": "College management endpoints"
+    },
+    {
+      "name": "drives",
+      "description": "Drive management endpoints"
+    },
+    {
+      "name": "panels",
+      "description": "Panel management endpoints"
+    },
+    {
+      "name": "assignments",
+      "description": "Assignment management endpoints"
+    },
+    {
+      "name": "students",
+      "description": "Student management endpoints"
+    }
+  ],
+  "paths": {
+    "/drives": {
+      "post": {
+        "tags": ["drives"],
+        "summary": "Create a new drive",
+        "description": "Create a new recruitment drive with the provided details",
+        "operationId": "createDrive",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDriveDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The drive has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": ["drives"],
+        "summary": "Get a paginated list of drives",
+        "description": "Get a paginated list of drives with optional filtering",
+        "operationId": "getDrives",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starts from 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of drives retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDriveResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/drives/{driveId}": {
+      "get": {
+        "tags": ["drives"],
+        "summary": "Get a drive by ID",
+        "description": "Get detailed information about a specific drive by its ID",
+        "operationId": "getDriveById",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "includeRounds",
+            "in": "query",
+            "description": "Whether to include rounds in the response",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Drive retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["drives"],
+        "summary": "Update a drive",
+        "description": "Update an existing drive's information",
+        "operationId": "updateDrive",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDriveDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Drive updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["drives"],
+        "summary": "Delete a drive",
+        "description": "Soft delete a drive by its ID",
+        "operationId": "deleteDrive",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Drive deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      }
+    },
+    "/drives/{driveId}/rounds": {
+      "get": {
+        "tags": ["drives"],
+        "summary": "Get all rounds for a drive",
+        "description": "Get all rounds configured for a specific drive",
+        "operationId": "getRounds",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "query",
+            "description": "Optional round number to filter by",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rounds retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoundDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["drives"],
+        "summary": "Create a new round",
+        "description": "Create a new round for a specific drive",
+        "operationId": "createRound",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoundDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Round created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      }
+    },
+    "/drives/{driveId}/rounds/{roundNumber}": {
+      "get": {
+        "tags": ["drives"],
+        "summary": "Get a specific round",
+        "description": "Get a specific round by number for a drive",
+        "operationId": "getRoundByNumber",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "path",
+            "description": "Round number to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Round retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive or round not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["drives"],
+        "summary": "Update a round",
+        "description": "Update a specific round for a drive",
+        "operationId": "updateRound",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "path",
+            "description": "Round number to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoundDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Round updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive or round not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["drives"],
+        "summary": "Delete a round",
+        "description": "Delete a specific round from a drive",
+        "operationId": "deleteRound",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "path",
+            "description": "Round number to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Round deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriveDocument"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive or round not found"
+          }
+        }
+      }
+    },
+    "/panels": {
+      "post": {
+        "tags": ["panels"],
+        "summary": "Create a new panel",
+        "description": "Create a new panel with the provided details",
+        "operationId": "createPanel",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePanelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The panel has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Panel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": ["panels"],
+        "summary": "Get a paginated list of panels",
+        "description": "Get a paginated list of panels with optional filtering",
+        "operationId": "getPanels",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starts from 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "primaryPanelMemberEmployeeId",
+            "in": "query",
+            "description": "Filter by primary panel member's employee ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of panels retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Panel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/panels/{id}": {
+      "get": {
+        "tags": ["panels"],
+        "summary": "Get a panel by ID",
+        "description": "Get detailed information about a specific panel by its ID",
+        "operationId": "getPanelById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the panel to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Panel retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Panel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - panel not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "put": {
+        "tags": ["panels"],
+        "summary": "Update a panel",
+        "description": "Update an existing panel's information",
+        "operationId": "updatePanel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the panel to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePanelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Panel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Panel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error or panel not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/assignments": {
+      "post": {
+        "tags": ["assignments"],
+        "summary": "Create a new assignment",
+        "description": "Create a new assignment with the provided details",
+        "operationId": "createAssignment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssignmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The assignment has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": ["assignments"],
+        "summary": "Get a paginated list of assignments",
+        "description": "Get a paginated list of assignments with optional filtering",
+        "operationId": "getAssignments",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starts from 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "studentId",
+            "in": "query",
+            "description": "Filter by student ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "panelId",
+            "in": "query",
+            "description": "Filter by panel ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "query",
+            "description": "Filter by round number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "driveId",
+            "in": "query",
+            "description": "Filter by drive ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of assignments retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAssignmentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/assignments/{assignmentId}": {
+      "get": {
+        "tags": ["assignments"],
+        "summary": "Get an assignment by ID",
+        "description": "Get detailed information about a specific assignment by its ID",
+        "operationId": "getAssignmentById",
+        "parameters": [
+          {
+            "name": "assignmentId",
+            "in": "path",
+            "description": "ID of the assignment to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignment retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - assignment not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "put": {
+        "tags": ["assignments"],
+        "summary": "Update an assignment",
+        "description": "Update an existing assignment's information",
+        "operationId": "updateAssignment",
+        "parameters": [
+          {
+            "name": "assignmentId",
+            "in": "path",
+            "description": "ID of the assignment to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assignment updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error or assignment not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["assignments"],
+        "summary": "Delete an assignment",
+        "description": "Remove an assignment by its ID",
+        "operationId": "deleteAssignment",
+        "parameters": [
+          {
+            "name": "assignmentId",
+            "in": "path",
+            "description": "ID of the assignment to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignment removed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Assignment removed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - assignment not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/colleges": {
+      "post": {
+        "tags": ["colleges"],
+        "summary": "Create a new college",
+        "description": "Create a new college with the provided details",
+        "operationId": "createCollege",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCollegeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The college has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollegeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": ["colleges"],
+        "summary": "Get a paginated list of colleges",
+        "description": "Get a paginated list of colleges with optional filtering by city",
+        "operationId": "getColleges",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starts from 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Filter by city",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of colleges retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedCollegeResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/students": {
+      "post": {
+        "tags": ["students"],
+        "summary": "Create a new student",
+        "description": "Create a new student with the provided details",
+        "operationId": "createStudent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The student has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "get": {
+        "tags": ["students"],
+        "summary": "Get a paginated list of students",
+        "description": "Get a paginated list of students with optional filtering",
+        "operationId": "getStudents",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (starts from 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "collegeId",
+            "in": "query",
+            "description": "Filter by college ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "driveId",
+            "in": "query",
+            "description": "Filter by drive ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "description": "Filter by department",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "testBatch",
+            "in": "query",
+            "description": "Filter by test batch",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of students retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedStudentResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/students/{studentId}": {
+      "get": {
+        "tags": ["students"],
+        "summary": "Get a student by ID",
+        "description": "Get detailed information about a specific student by its ID",
+        "operationId": "getStudentById",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - student not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "put": {
+        "tags": ["students"],
+        "summary": "Update a student",
+        "description": "Update an existing student's information",
+        "operationId": "updateStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Student updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error or student not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["students"],
+        "summary": "Delete a student",
+        "description": "Soft delete a student by its ID",
+        "operationId": "deleteStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - student not found"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          }
+        }
+      }
+    },
+    "/students/export/{driveId}": {
+      "get": {
+        "tags": ["students"],
+        "summary": "Export students to Excel by drive ID",
+        "description": "Export students to Excel file for a specific drive",
+        "operationId": "exportStudentsToExcel",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive to export students for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file containing student data",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      }
+    },
+    "/students/import/{driveId}": {
+      "post": {
+        "tags": ["students"],
+        "summary": "Bulk import students from CSV",
+        "description": "Import multiple students from a CSV file for a specific drive",
+        "operationId": "bulkImportStudents",
+        "parameters": [
+          {
+            "name": "driveId",
+            "in": "path",
+            "description": "ID of the drive to import students for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "CSV file containing student data"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Students imported successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid file format or data"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Drive not found"
+          }
+        }
+      }
+    },
+    "/students/{studentId}/rounds": {
+      "get": {
+        "tags": ["students"],
+        "summary": "Get all rounds for a student",
+        "description": "Get all rounds for a specific student",
+        "operationId": "getStudentRounds",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status (NOT_STARTED, IN_PROGRESS, COMPLETED, SUBMITTED)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "SUBMITTED"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rounds retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudentRound"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
+      }
+    },
+    "/students/{studentId}/rounds/{roundNumber}": {
+      "get": {
+        "tags": ["students"],
+        "summary": "Get a specific round for a student",
+        "description": "Get a specific round by number for a student",
+        "operationId": "getStudentRoundByNumber",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "path",
+            "description": "Round number to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Round retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentRound"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Student or round not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["students"],
+        "summary": "Update a specific round for a student",
+        "description": "Update a specific round by number for a student",
+        "operationId": "updateStudentRound",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "roundNumber",
+            "in": "path",
+            "description": "Round number to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentRoundDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Round updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "Student or round not found"
+          }
+        }
+      }
+    },
+    "/colleges/{collegeId}": {
+      "get": {
+        "tags": ["colleges"],
+        "summary": "Get a college by ID",
+        "description": "Get detailed information about a specific college by its ID",
+        "operationId": "getCollege",
+        "parameters": [
+          {
+            "name": "collegeId",
+            "in": "path",
+            "description": "ID of the college to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "College retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollegeResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "College not found or has been deleted"
+          }
+        }
+      },
+      "put": {
+        "tags": ["colleges"],
+        "summary": "Update a college",
+        "description": "Update an existing college's information",
+        "operationId": "updateCollege",
+        "parameters": [
+          {
+            "name": "collegeId",
+            "in": "path",
+            "description": "ID of the college to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCollegeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "College updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollegeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "College not found or has been deleted"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["colleges"],
+        "summary": "Soft delete a college",
+        "description": "Soft delete a college by its ID",
+        "operationId": "deleteCollege",
+        "parameters": [
+          {
+            "name": "collegeId",
+            "in": "path",
+            "description": "ID of the college to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "College deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication"
+          },
+          "404": {
+            "description": "College not found or has been deleted"
+          }
+        }
+      }
+    }
+  }
+}

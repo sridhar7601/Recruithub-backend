@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "profile-evaluator-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Submit Evaluation Job",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/drives/:driveId/submit-evaluation",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "drives", ":driveId", "submit-evaluation"],
+          "variable": [
+            {
+              "key": "driveId",
+              "value": "",
+              "description": "ID of the drive to evaluate"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"evaluationType\": \"PreScreening\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Submit a job to evaluate profiles for a drive"
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/drives/:driveId/submit-evaluation"
+            }
+          },
+          "status": "Accepted",
+          "code": 202,
+          "body": "{\n    \"messageId\": \"message-id-from-sqs\"\n}"
+        },
+        {
+          "name": "Drive Not Found",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/drives/:driveId/submit-evaluation"
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n    \"message\": \"Drive with ID {driveId} not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+        },
+        {
+          "name": "No Students Found",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/drives/:driveId/submit-evaluation"
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n    \"message\": \"No students found for drive {driveId}\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}

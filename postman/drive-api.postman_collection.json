@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "Drive API",
+    "description": "Collection for testing the Drive API endpoints",
+    "_postman_variable_scope": "environment",
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:8000/api",
+        "type": "string"
+      },
+      {
+        "key": "collegeId",
+        "value": "",
+        "description": "ID of a college to use for testing"
+      },
+      {
+        "key": "driveId",
+        "value": "",
+        "description": "ID of a drive to use for testing"
+      },
+      {
+        "key": "primarySpocId",
+        "value": "",
+        "description": "ID of a primary SPOC to use for testing"
+      },
+      {
+        "key": "secondarySpocId",
+        "value": "",
+        "description": "ID of a secondary SPOC to use for testing"
+      },
+      {
+        "key": "anotherSecondarySpocId",
+        "value": "",
+        "description": "ID of another secondary SPOC to use for testing"
+      },
+      {
+        "key": "roundNumber",
+        "value": "1",
+        "description": "Round number to use for testing"
+      }
+    ],
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Drive",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Summer 2025 Recruitment Drive\",\n    \"collegeId\": \"{{collegeId}}\",\n    \"collegeName\": \"Harvard University\",\n    \"role\": \"Associate Engineer\",\n    \"practice\": \"Application Development\",\n    \"startDate\": \"2025-06-15T09:00:00Z\",\n    \"primarySpocId\": \"{{primarySpocId}}\",\n    \"primarySpocEmail\": \"primary.spoc@example.com\",\n    \"primarySpocName\": \"John Doe\",\n    \"secondarySpocs\": [\n        {\n            \"spocId\": \"{{secondarySpocId}}\",\n            \"spocEmail\": \"secondary.spoc@example.com\",\n            \"spocName\": \"Jane Smith\"\n        }\n    ],\n    \"isPinned\": false,\n    \"isCompleted\": false,\n    \"rounds\": [\n        {\n            \"roundNumber\": 1,\n            \"name\": \"Initial Assessment\",\n            \"startTime\": \"2025-06-15T09:00:00Z\",\n            \"endTime\": \"2025-06-15T12:00:00Z\",\n            \"evaluationCriteria\": [\n                {\n                    \"name\": \"WECP Percentage\",\n                    \"description\": \"Online aptitude test score\",\n                    \"ratingType\": \"percentage\",\n                    \"isRequired\": true\n                }\n            ]\n        },\n        {\n            \"roundNumber\": 2,\n            \"name\": \"Technical Round\",\n            \"startTime\": \"2025-06-16T09:00:00Z\",\n            \"endTime\": \"2025-06-16T17:00:00Z\",\n            \"evaluationCriteria\": [\n                {\n                    \"name\": \"Problem Solving\",\n                    \"description\": \"Ability to solve complex problems\",\n                    \"ratingType\": \"scale-5\",\n                    \"isRequired\": true\n                },\n                {\n                    \"name\": \"Logical Thinking\",\n                    \"description\": \"Logical and structured approach\",\n                    \"ratingType\": \"scale-5\",\n                    \"isRequired\": true\n                },\n                {\n                    \"name\": \"Technical Feedback\",\n                    \"description\": \"Overall technical assessment\",\n                    \"ratingType\": \"text\",\n                    \"isRequired\": false\n                }\n            ]\n        }\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/drives",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives"]
+        },
+        "description": "Create a new drive"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Drives (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "Get a paginated list of drives"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Drive by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}?includeRounds=true",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}"],
+          "query": [
+            {
+              "key": "includeRounds",
+              "value": "true",
+              "description": "Whether to include rounds in the response"
+            }
+          ]
+        },
+        "description": "Get a drive by ID with rounds configuration"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Drive",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Updated Summer 2025 Recruitment Drive\",\n    \"isPinned\": true,\n    \"isCompleted\": false,\n    \"secondarySpocs\": [\n        {\n            \"spocId\": \"{{secondarySpocId}}\",\n            \"spocEmail\": \"updated.secondary.spoc@example.com\",\n            \"spocName\": \"Updated Jane Smith\"\n        },\n        {\n            \"spocId\": \"{{anotherSecondarySpocId}}\",\n            \"spocEmail\": \"another.secondary.spoc@example.com\",\n            \"spocName\": \"Another Secondary SPOC\"\n        }\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}"]
+        },
+        "description": "Update a drive"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Drive",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}"]
+        },
+        "description": "Soft delete a drive"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Drive Rounds",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/rounds",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "rounds"]
+        },
+        "description": "Get all rounds for a drive"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific Round",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/rounds/{{roundNumber}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "rounds", "{{roundNumber}}"]
+        },
+        "description": "Get a specific round by number"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Round",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"roundNumber\": 3,\n    \"name\": \"HR Round\",\n    \"startTime\": \"2025-06-17T09:00:00Z\",\n    \"endTime\": \"2025-06-17T17:00:00Z\",\n    \"evaluationCriteria\": [\n        {\n            \"name\": \"Communication Skills\",\n            \"description\": \"Ability to communicate effectively\",\n            \"ratingType\": \"scale-5\",\n            \"isRequired\": true\n        },\n        {\n            \"name\": \"Cultural Fit\",\n            \"description\": \"Alignment with company values\",\n            \"ratingType\": \"scale-5\",\n            \"isRequired\": true\n        },\n        {\n            \"name\": \"HR Feedback\",\n            \"description\": \"Overall HR assessment\",\n            \"ratingType\": \"text\",\n            \"isRequired\": false\n        }\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/rounds",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "rounds"]
+        },
+        "description": "Create a new round for a drive"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Round",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Updated HR Round\",\n    \"startTime\": \"2025-06-17T10:00:00Z\",\n    \"endTime\": \"2025-06-17T18:00:00Z\",\n    \"evaluationCriteria\": [\n        {\n            \"name\": \"Communication Skills\",\n            \"description\": \"Ability to communicate effectively\",\n            \"ratingType\": \"scale-10\",\n            \"isRequired\": true\n        },\n        {\n            \"name\": \"Cultural Fit\",\n            \"description\": \"Alignment with company values\",\n            \"ratingType\": \"scale-10\",\n            \"isRequired\": true\n        },\n        {\n            \"name\": \"Leadership Potential\",\n            \"description\": \"Potential for leadership roles\",\n            \"ratingType\": \"scale-5\",\n            \"isRequired\": false\n        },\n        {\n            \"name\": \"HR Feedback\",\n            \"description\": \"Overall HR assessment\",\n            \"ratingType\": \"text\",\n            \"isRequired\": false\n        }\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/rounds/{{roundNumber}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "rounds", "{{roundNumber}}"]
+        },
+        "description": "Update a specific round"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Round",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/drives/{{driveId}}/rounds/{{roundNumber}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["drives", "{{driveId}}", "rounds", "{{roundNumber}}"]
+        },
+        "description": "Delete a specific round"
+      },
+      "response": []
+    }
+  ]
+}
